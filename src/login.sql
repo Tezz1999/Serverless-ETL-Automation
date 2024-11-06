@@ -1,0 +1,10 @@
+USE [master]
+GO
+CREATE LOGIN [myuser] WITH PASSWORD=N'myuser54321', CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
+GO
+USE [StackOverFLowdb]
+GO
+CREATE USER [myuser] FOR LOGIN [myuser]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [myuser]
+GO

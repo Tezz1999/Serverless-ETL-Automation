@@ -1,0 +1,67 @@
+version: '3.8'
+
+networks:
+  tejs_network:
+    driver: bridge
+
+services:
+  hadoop:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: hadoop
+    environment:
+      - CLUSTER_NAME=test
+    volumes:
+      - hadoop_data:/hadoop/dfs/name
+    ports:
+      - "9870:9870"  # HDFS web interface
+      - "9000:9000"  # HDFS access
+    command: ["sh", "-c", "service ssh start; hdfs namenode -format && hdfs namenode"]
+    networks:
+      - tejs_network
+
+  pyspark:
+    image: jupyter/pyspark-notebook:latest
+    container_name: pyspark
+    volumes:
+      - ./serverless-etl-automation:/app/serverless_etl  # Mount your local directory
+      - ./serverless-etl-automation/data:/home/jovyan/work  # Mount CSV directory
+    depends_on:
+      - hadoop
+      - postgres
+    environment:
+      - SPARK_OPTS=--driver-java-options=-Djava.net.preferIPv4Stack=true
+    ports:
+      - "8888:8888"  # Jupyter Notebook interface
+      - "4040:4040"  # Spark UI
+    command: ["start-notebook.sh", "--NotebookApp.token=''"]
+    networks:
+      - tejs_network
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: myuser
+      POSTGRES_DB: test
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - tejs_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: user
+    ports:
+      - "8080:80"
+    networks:
+      - tejs_network
+
+volumes:
+  hadoop_data:
+  postgres_data:
