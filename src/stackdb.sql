@@ -1,11 +1,3 @@
--- Create Database
-CREATE DATABASE StackOverflowSurveyDB;
-GO
-
--- Use the created Database
-USE StackOverflowSurveyDB;
-GO
-
 CREATE TABLE UserProfile (
     ResponseId INT PRIMARY KEY,
     Age VARCHAR(50),
@@ -18,16 +10,17 @@ CREATE TABLE UserProfile (
 );
 
 CREATE TABLE ProfessionalTech (
-    ResponseId INT FOREIGN KEY REFERENCES UserProfile(ResponseId),
+    ResponseId INT,
     DevType VARCHAR(100),
     OrgSize VARCHAR(50),
     PurchaseInfluence VARCHAR(50),
     TechList TEXT,
-    BuyNewTool TEXT
+    BuyNewTool TEXT,
+    CONSTRAINT fk_professionaltech_userprofile FOREIGN KEY (ResponseId) REFERENCES UserProfile(ResponseId)
 );
 
 CREATE TABLE TechPreferences (
-    ResponseId INT FOREIGN KEY REFERENCES UserProfile(ResponseId),
+    ResponseId INT,
     LanguageHaveWorkedWith TEXT,
     LanguageWantToWorkWith TEXT,
     DatabaseHaveWorkedWith TEXT,
@@ -39,34 +32,38 @@ CREATE TABLE TechPreferences (
     MiscTechHaveWorkedWith TEXT,
     MiscTechWantToWorkWith TEXT,
     ToolsTechHaveWorkedWith TEXT,
-    ToolsTechWantToWorkWith TEXT
+    ToolsTechWantToWorkWith TEXT,
+    CONSTRAINT fk_techpreferences_userprofile FOREIGN KEY (ResponseId) REFERENCES UserProfile(ResponseId)
 );
 
 CREATE TABLE TechStackUsage (
-    ResponseId INT FOREIGN KEY REFERENCES UserProfile(ResponseId),
+    ResponseId INT,
     OpSysPersonalUse VARCHAR(100),
     OpSysProfessionalUse VARCHAR(100),
     OfficeStackAsyncHaveWorkedWith TEXT,
     OfficeStackAsyncWantToWorkWith TEXT,
     OfficeStackSyncHaveWorkedWith TEXT,
-    OfficeStackSyncWantToWorkWith TEXT
+    OfficeStackSyncWantToWorkWith TEXT,
+    CONSTRAINT fk_techstackusage_userprofile FOREIGN KEY (ResponseId) REFERENCES UserProfile(ResponseId)
 );
 
 CREATE TABLE AIInteraction (
-    ResponseId INT FOREIGN KEY REFERENCES UserProfile(ResponseId),
+    ResponseId INT,
     SOAI VARCHAR(50),
     AISelect TEXT,
     AISent VARCHAR(50),
     AIAcc VARCHAR(50),
     AIBen TEXT,
     AIToolInterested TEXT,
-    AIToolUsing TEXT
+    AIToolUsing TEXT,
+    CONSTRAINT fk_aiinteraction_userprofile FOREIGN KEY (ResponseId) REFERENCES UserProfile(ResponseId)
 );
 
 CREATE TABLE SurveyInteraction (
-    ResponseId INT FOREIGN KEY REFERENCES UserProfile(ResponseId),
+    ResponseId INT,
     SOVisitFreq VARCHAR(50),
     SOAccount VARCHAR(10),
     SOPartFreq VARCHAR(50),
-    SOComm VARCHAR(50)
+    SOComm VARCHAR(50),
+    CONSTRAINT fk_surveyinteraction_userprofile FOREIGN KEY (ResponseId) REFERENCES UserProfile(ResponseId)
 );
