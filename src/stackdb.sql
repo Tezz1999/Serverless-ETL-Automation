@@ -1,9 +1,13 @@
+CREATE DATABASE StackOverflowSurveyData;
+
+\c StackOverflowSurveyData
+
 CREATE TABLE UserProfile (
     ResponseId INT PRIMARY KEY,
-    Age VARCHAR(50),
-    Employment VARCHAR(100),
-    RemoteWork VARCHAR(50),
-    EdLevel VARCHAR(100),
+    Age VARCHAR(100),
+    Employment TEXT,
+    RemoteWork VARCHAR(100),
+    EdLevel VARCHAR(150),
     Country VARCHAR(100),
     CompTotal DECIMAL(15, 2),
     ConvertedCompYearly DECIMAL(15, 2)
@@ -11,9 +15,9 @@ CREATE TABLE UserProfile (
 
 CREATE TABLE ProfessionalTech (
     ResponseId INT,
-    DevType VARCHAR(100),
-    OrgSize VARCHAR(50),
-    PurchaseInfluence VARCHAR(50),
+    DevType TEXT,
+    OrgSize VARCHAR(100),
+    PurchaseInfluence VARCHAR(100),
     TechList TEXT,
     BuyNewTool TEXT,
     CONSTRAINT fk_professionaltech_userprofile FOREIGN KEY (ResponseId) REFERENCES UserProfile(ResponseId)
@@ -38,8 +42,8 @@ CREATE TABLE TechPreferences (
 
 CREATE TABLE TechStackUsage (
     ResponseId INT,
-    OpSysPersonalUse VARCHAR(100),
-    OpSysProfessionalUse VARCHAR(100),
+    OpSysPersonalUse TEXT,
+    OpSysProfessionalUse TEXT,
     OfficeStackAsyncHaveWorkedWith TEXT,
     OfficeStackAsyncWantToWorkWith TEXT,
     OfficeStackSyncHaveWorkedWith TEXT,
@@ -49,10 +53,10 @@ CREATE TABLE TechStackUsage (
 
 CREATE TABLE AIInteraction (
     ResponseId INT,
-    SOAI VARCHAR(50),
+    SOAI TEXT,
     AISelect TEXT,
-    AISent VARCHAR(50),
-    AIAcc VARCHAR(50),
+    AISent TEXT,
+    AIAcc TEXT,
     AIBen TEXT,
     AIToolInterested TEXT,
     AIToolUsing TEXT,
@@ -61,9 +65,9 @@ CREATE TABLE AIInteraction (
 
 CREATE TABLE SurveyInteraction (
     ResponseId INT,
-    SOVisitFreq VARCHAR(50),
-    SOAccount VARCHAR(10),
-    SOPartFreq VARCHAR(50),
-    SOComm VARCHAR(50),
+    SOVisitFreq VARCHAR(100),
+    SOAccount VARCHAR(50),
+    SOPartFreq VARCHAR(100),
+    SOComm VARCHAR(100),
     CONSTRAINT fk_surveyinteraction_userprofile FOREIGN KEY (ResponseId) REFERENCES UserProfile(ResponseId)
 );
