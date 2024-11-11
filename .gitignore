@@ -1,3 +1,7 @@
 myenv 
-data/
+data
 .env
+.terraform/
+.terraform.lock.hcl
+.pem
+.vscode
